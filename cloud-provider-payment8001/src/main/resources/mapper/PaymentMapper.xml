@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.atguigu.springcloud.dao.PaymentDao">
+    <resultMap id="BaseResultMap" type="com.atguigu.springcloud.entites.Payment">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="serial" property="serial" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <insert id="create" parameterType="com.atguigu.springcloud.entites.Payment" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into payment (serial) values(#{serial});
+    </insert>
+
+    <update id="update" parameterType="com.atguigu.springcloud.entites.Payment">
+        update payment set serial=#{serial} where id=#{id}
+    </update>
+
+    <delete id="delById">
+        delete from payment
+        <where>
+            <if test="id != null and id != ''">
+                AND id = #{id}
+            </if>
+        </where>
+    </delete>
+
+    <select id="getPaymentById" resultMap="BaseResultMap">
+        SELECT * from payment where id=#{id};
+    </select>
+
+    <select id="getPaymentList" resultMap="BaseResultMap" parameterType="com.atguigu.springcloud.entites.Payment">
+        SELECT * from payment
+        <where>
+            <if test="id != null and id != ''">
+                AND id = #{id}
+            </if>
+            <if test="serial != null and serial != ''">
+                AND serial like '%#{serial}%'
+            </if>
+        </where>
+    </select>
+</mapper>
+
+
+
+
